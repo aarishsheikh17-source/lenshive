@@ -20,25 +20,19 @@ type SearchParams = z.infer<typeof search>;
 
 export const Route = createFileRoute("/browse")({
   validateSearch: search,
-  head: ({ search }) => {
-    const parts = [
-      search.specialty ? `${search.specialty} photographers` : "Photographers",
-      search.q ? `in ${search.q}` : null,
-    ].filter(Boolean);
-    const title = `${parts.join(" ")} — LensHive`;
-    return {
-      meta: [
-        { title },
-        {
-          name: "description",
-          content: `Browse and hire ${parts.join(" ").toLowerCase()} on LensHive. Filter by city, specialty, and budget.`,
-        },
-        { property: "og:title", content: title },
-        { property: "og:url", content: "/browse" },
-      ],
-      links: [{ rel: "canonical", href: "/browse" }],
-    };
-  },
+  head: () => ({
+    meta: [
+      { title: "Browse photographers — LensHive" },
+      {
+        name: "description",
+        content:
+          "Browse and hire professional photographers across India and worldwide. Filter by city, specialty, and budget.",
+      },
+      { property: "og:title", content: "Browse photographers — LensHive" },
+      { property: "og:url", content: "/browse" },
+    ],
+    links: [{ rel: "canonical", href: "/browse" }],
+  }),
   component: BrowsePage,
 });
 
