@@ -157,8 +157,6 @@ export async function getPhotographer(id: string): Promise<PhotographerDetail | 
   const base = normalize({ ...data, pricing: Array.isArray(data.pricing) ? data.pricing[0] : data.pricing });
   const pricingRow = Array.isArray(data.pricing) ? data.pricing[0] : (data as any).pricing;
 
-  // best-effort, ignore failure
-  supabase.rpc("increment_profile_views", { photog_id: id }).then(() => {}, () => {});
 
   return {
     ...base,
