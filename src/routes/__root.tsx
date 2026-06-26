@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Find and hire professional photographers for weddings, reels, brand shoots, events and portraits across India and worldwide. Browse portfolios and hire by hour or project.",
       },
-      { property: "og:title", content: "LensHive — Hire Professional Photographers" },
+      { property: "og:title", content: "LensHive — Hire Professional Photographers in India" },
       {
         property: "og:description",
         content:
@@ -90,6 +90,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "LensHive" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "LensHive — Hire Professional Photographers in India" },
+      { name: "description", content: "LensHive is a photographer marketplace connecting clients with professionals." },
+      { property: "og:description", content: "LensHive is a photographer marketplace connecting clients with professionals." },
+      { name: "twitter:description", content: "LensHive is a photographer marketplace connecting clients with professionals." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8316d39a-e1b2-4287-9a19-2eed42dda5c3/id-preview-5c4b1a7b--4b2b89a7-ec7d-4e8c-bcef-367629824bdf.lovable.app-1782467668621.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8316d39a-e1b2-4287-9a19-2eed42dda5c3/id-preview-5c4b1a7b--4b2b89a7-ec7d-4e8c-bcef-367629824bdf.lovable.app-1782467668621.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
