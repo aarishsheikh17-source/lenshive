@@ -1,0 +1,8 @@
+# LensHive
+
+> LensHive is a marketplace of vetted professional photographers for weddings, brand shoots, events and portraits across India and worldwide. Clients browse portfolios and book by the hour, half-day or project.
+
+## Pages
+
+- [Home](/): What LensHive is and featured photographers.
+- [Browse photographers](/browse): Searchable directory filterable by city, specialty, availability and budget.
