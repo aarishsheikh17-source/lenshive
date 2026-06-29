@@ -420,7 +420,7 @@ function Lightbox({
       </button>
       <img
         src={item.public_url}
-        alt={item.caption ?? ""}
+        alt={item.caption ?? "Photographer portfolio image"}
         onClick={(e) => e.stopPropagation()}
         className="max-h-[85vh] max-w-[90vw] object-contain rounded"
       />
