@@ -15,12 +15,18 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Find and hire professional photographers for weddings, reels, brand shoots and portraits across India and worldwide. Browse portfolios and hire by hour, half-day or full-day.",
+          "Find and hire professional photographers for weddings, brand shoots, events and portraits across India. Browse portfolios and book by hour or project.",
       },
       { property: "og:title", content: "LensHive — Hire Professional Photographers" },
-      { property: "og:url", content: "/" },
+      {
+        property: "og:description",
+        content:
+          "Find and hire professional photographers for weddings, brand shoots, events and portraits. Browse portfolios and book by hour or project.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://lenshive.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://lenshive.lovable.app/" }],
   }),
   component: Home,
 });
