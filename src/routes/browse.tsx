@@ -29,9 +29,27 @@ export const Route = createFileRoute("/browse")({
           "Browse and hire professional photographers across India and worldwide. Filter by city, specialty, and budget.",
       },
       { property: "og:title", content: "Browse photographers — LensHive" },
-      { property: "og:url", content: "/browse" },
+      {
+        property: "og:description",
+        content:
+          "Search the LensHive directory of vetted photographers. Filter by city, specialty, availability and budget to find your match.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://lenshive.lovable.app/browse" },
     ],
-    links: [{ rel: "canonical", href: "/browse" }],
+    links: [{ rel: "canonical", href: "https://lenshive.lovable.app/browse" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Browse photographers — LensHive",
+          url: "https://lenshive.lovable.app/browse",
+          description: "Directory of professional photographers on LensHive.",
+        }),
+      },
+    ],
   }),
   component: BrowsePage,
 });
