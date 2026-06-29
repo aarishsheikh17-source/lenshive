@@ -16,7 +16,7 @@ export function PhotographerCard({ p }: { p: PhotographerListItem }) {
         {p.cover_url ? (
           <img
             src={p.cover_url}
-            alt={`${p.profile?.full_name ?? "Photographer"} portfolio cover`}
+            alt={`${p.profile?.full_name ?? "Photographer"} — ${p.specializations[0] ?? "professional"} photography portfolio cover in ${p.city ?? ""}`}
             loading="lazy"
             className="w-full h-full object-cover transition duration-500 group-hover:scale-[1.03]"
           />
