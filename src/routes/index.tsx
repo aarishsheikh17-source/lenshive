@@ -93,6 +93,7 @@ function Home() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="City or photographer name…"
+                aria-label="Search by city or photographer name"
                 className="w-full bg-transparent py-3 text-sm placeholder:text-soft focus:outline-none"
               />
             </div>
@@ -100,6 +101,7 @@ function Home() {
             <select
               value={specialty}
               onChange={(e) => setSpecialty(e.target.value)}
+              aria-label="Filter by specialty"
               className="bg-transparent text-sm px-3 py-3 sm:py-0 focus:outline-none text-ink"
             >
               <option value="">All specialties</option>
