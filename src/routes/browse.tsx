@@ -116,6 +116,7 @@ function BrowsePage() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search by city, name, or specialty…"
+              aria-label="Search photographers by city, name, or specialty"
               className="bg-transparent text-sm w-full focus:outline-none"
             />
             {q && (
@@ -127,6 +128,7 @@ function BrowsePage() {
           <select
             value={search.specialty ?? ""}
             onChange={(e) => update("specialty", (e.target.value || undefined) as any)}
+            aria-label="Filter by specialty"
             className="bg-cream border border-border rounded-lg text-sm px-3 py-2 text-ink"
           >
             <option value="">All specialties</option>
@@ -137,6 +139,7 @@ function BrowsePage() {
           <select
             value={search.price ?? "any"}
             onChange={(e) => update("price", e.target.value as any)}
+            aria-label="Filter by price range"
             className="bg-cream border border-border rounded-lg text-sm px-3 py-2 text-ink"
           >
             {Object.entries(PRICE_BUCKETS).map(([k, v]) => (
