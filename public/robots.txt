@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://lenshive.lovable.app/sitemap.xml

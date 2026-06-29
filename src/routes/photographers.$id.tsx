@@ -37,7 +37,8 @@ export const Route = createFileRoute("/photographers/$id")({
     if (!p) return { meta: [{ title: "Photographer — LensHive" }] };
     const name = p.profile?.full_name ?? "Photographer";
     const title = `${name} — Photographer in ${p.city ?? "—"} | LensHive`;
-    const desc = (p.bio ?? "").slice(0, 155);
+    const desc = (p.bio ?? `Hire ${name}, a professional photographer in ${p.city ?? ""} on LensHive.`).slice(0, 155);
+    const url = `https://lenshive.lovable.app/photographers/${p.id}`;
     return {
       meta: [
         { title },
@@ -45,12 +46,39 @@ export const Route = createFileRoute("/photographers/$id")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "profile" },
-        { property: "og:url", content: `/photographers/${p.id}` },
+        { property: "og:url", content: url },
         ...(p.portfolio[0]?.public_url
           ? [{ property: "og:image", content: p.portfolio[0].public_url }]
           : []),
       ],
-      links: [{ rel: "canonical", href: `/photographers/${p.id}` }],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name,
+            url,
+            jobTitle: "Photographer",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: p.city ?? undefined,
+              addressCountry: p.country ?? undefined,
+            },
+            image: p.profile?.avatar_url ?? p.portfolio[0]?.public_url ?? undefined,
+            ...(p.total_reviews > 0
+              ? {
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: p.rating,
+                    reviewCount: p.total_reviews,
+                  },
+                }
+              : {}),
+          }),
+        },
+      ],
     };
   },
   component: ProfilePage,
@@ -226,7 +254,7 @@ function ProfilePage() {
                   >
                     <img
                       src={item.public_url}
-                      alt={item.caption ?? "Portfolio image"}
+                      alt={item.caption ?? `${name} photography portfolio — ${p.specializations[0] ?? "photo shoot"} in ${p.city ?? ""}`}
                       loading="lazy"
                       className="w-full h-full object-cover transition group-hover:scale-[1.04]"
                     />
@@ -392,7 +420,7 @@ function Lightbox({
       </button>
       <img
         src={item.public_url}
-        alt={item.caption ?? ""}
+        alt={item.caption ?? "Photographer portfolio image"}
         onClick={(e) => e.stopPropagation()}
         className="max-h-[85vh] max-w-[90vw] object-contain rounded"
       />

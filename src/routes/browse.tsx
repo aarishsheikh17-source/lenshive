@@ -29,9 +29,27 @@ export const Route = createFileRoute("/browse")({
           "Browse and hire professional photographers across India and worldwide. Filter by city, specialty, and budget.",
       },
       { property: "og:title", content: "Browse photographers — LensHive" },
-      { property: "og:url", content: "/browse" },
+      {
+        property: "og:description",
+        content:
+          "Search the LensHive directory of vetted photographers. Filter by city, specialty, availability and budget to find your match.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://lenshive.lovable.app/browse" },
     ],
-    links: [{ rel: "canonical", href: "/browse" }],
+    links: [{ rel: "canonical", href: "https://lenshive.lovable.app/browse" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Browse photographers — LensHive",
+          url: "https://lenshive.lovable.app/browse",
+          description: "Directory of professional photographers on LensHive.",
+        }),
+      },
+    ],
   }),
   component: BrowsePage,
 });
@@ -98,6 +116,7 @@ function BrowsePage() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search by city, name, or specialty…"
+              aria-label="Search photographers by city, name, or specialty"
               className="bg-transparent text-sm w-full focus:outline-none"
             />
             {q && (
@@ -109,6 +128,7 @@ function BrowsePage() {
           <select
             value={search.specialty ?? ""}
             onChange={(e) => update("specialty", (e.target.value || undefined) as any)}
+            aria-label="Filter by specialty"
             className="bg-cream border border-border rounded-lg text-sm px-3 py-2 text-ink"
           >
             <option value="">All specialties</option>
@@ -119,6 +139,7 @@ function BrowsePage() {
           <select
             value={search.price ?? "any"}
             onChange={(e) => update("price", e.target.value as any)}
+            aria-label="Filter by price range"
             className="bg-cream border border-border rounded-lg text-sm px-3 py-2 text-ink"
           >
             {Object.entries(PRICE_BUCKETS).map(([k, v]) => (
