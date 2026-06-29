@@ -254,7 +254,7 @@ function ProfilePage() {
                   >
                     <img
                       src={item.public_url}
-                      alt={item.caption ?? "Portfolio image"}
+                      alt={item.caption ?? `${name} photography portfolio — ${p.specializations[0] ?? "photo shoot"} in ${p.city ?? ""}`}
                       loading="lazy"
                       className="w-full h-full object-cover transition group-hover:scale-[1.04]"
                     />
