@@ -92,6 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "LensHive — Hire Professional Photographers" },
       { name: "twitter:description", content: "Browse vetted photographers for weddings, brand shoots, events and portraits across India and worldwide." },
+      { name: "google-site-verification", content: "hrgemqFiLuYx6IXF89exaOpXVjrSWedqzROT5PWV0JU" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
