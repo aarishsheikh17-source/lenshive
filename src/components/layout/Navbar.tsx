@@ -8,7 +8,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-30 bg-cream/90 backdrop-blur border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link to="/" aria-label="LensHive home">
+        <Link to="/" aria-label="LensHive — Professional Photographer Directory, home">
           <Logo />
         </Link>
         <nav className="hidden md:flex items-center gap-7 text-sm text-ink">
