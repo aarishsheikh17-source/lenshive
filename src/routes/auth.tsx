@@ -129,13 +129,16 @@ function AuthPage() {
                     className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
                   />
                 </div>
-                <div>
-                  <span className="text-xs font-medium text-ink">I'm signing up as</span>
+                <div role="radiogroup" aria-labelledby="user-type-label">
+                  <span id="user-type-label" className="text-xs font-medium text-ink">I'm signing up as</span>
                   <div className="mt-1 grid grid-cols-2 gap-2">
                     {(["client", "photographer"] as const).map((t) => (
                       <button
                         key={t}
                         type="button"
+                        role="radio"
+                        aria-checked={userType === t}
+                        aria-label={t === "client" ? "Sign up as a Client (hire photographers)" : "Sign up as a Photographer (list your services)"}
                         onClick={() => setUserType(t)}
                         className={`text-sm px-3 py-2 rounded-md border transition ${
                           userType === t
