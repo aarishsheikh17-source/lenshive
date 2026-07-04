@@ -144,9 +144,10 @@ function Home() {
           </div>
           <Link
             to="/browse"
+            aria-label="View all photographers"
             className="hidden sm:inline-flex text-sm text-ink hover:text-dark items-center gap-1.5"
           >
-            View all <ArrowRight size={14} />
+            View all photographers <ArrowRight size={14} />
           </Link>
         </div>
 
