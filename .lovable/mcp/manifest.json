@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "lenshive-mcp",
+      "version": "0.1.0",
+      "title": "LensHive MCP"
+    },
+    "tools": [
+      {
+        "name": "search_photographers",
+        "title": "Search photographers",
+        "description": "Search LensHive's published photographers by keyword, specialty, city, price range, travel availability, and current availability. Returns a compact list with id, name, location, specializations, rating, and hourly rate.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "q": {
+              "description": "Free-text keyword (name, city, country, or specialty).",
+              "type": "string"
+            },
+            "specialty": {
+              "description": "Specialty tag such as Wedding, Portrait, Product.",
+              "type": "string"
+            },
+            "city": {
+              "description": "City name (case-insensitive).",
+              "type": "string"
+            },
+            "minHourly": {
+              "description": "Minimum hourly rate.",
+              "type": "number",
+              "minimum": 0
+            },
+            "maxHourly": {
+              "description": "Maximum hourly rate.",
+              "type": "number",
+              "minimum": 0
+            },
+            "travelOnly": {
+              "description": "Only photographers who travel for shoots.",
+              "type": "boolean"
+            },
+            "availableOnly": {
+              "description": "Only photographers currently accepting bookings.",
+              "type": "boolean"
+            },
+            "limit": {
+              "description": "Max results (default 24).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_photographer",
+        "title": "Get photographer details",
+        "description": "Fetch full public profile for a photographer by id: bio, pricing tiers, portfolio, contact handles, and recent reviews.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Photographer profile id (UUID)."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
