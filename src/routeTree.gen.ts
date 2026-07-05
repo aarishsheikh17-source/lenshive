@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PhotographersIdRouteImport } from './routes/photographers.$id'
+import { Route as BlogHiringWeddingPhotographersIndiaRouteImport } from './routes/blog.hiring-wedding-photographers-india'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -62,6 +63,12 @@ const PhotographersIdRoute = PhotographersIdRouteImport.update({
   path: '/photographers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogHiringWeddingPhotographersIndiaRoute =
+  BlogHiringWeddingPhotographersIndiaRouteImport.update({
+    id: '/blog/hiring-wedding-photographers-india',
+    path: '/blog/hiring-wedding-photographers-india',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
@@ -102,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -132,6 +141,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/auth/callback'
+    | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/auth/callback'
+    | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/.mcp/invoke-tool/$tool'
   id:
@@ -177,6 +189,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/dashboard'
     | '/auth/callback'
+    | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -191,6 +204,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  BlogHiringWeddingPhotographersIndiaRoute: typeof BlogHiringWeddingPhotographersIndiaRoute
   PhotographersIdRoute: typeof PhotographersIdRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -251,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/photographers/$id'
       fullPath: '/photographers/$id'
       preLoaderRoute: typeof PhotographersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/hiring-wedding-photographers-india': {
+      id: '/blog/hiring-wedding-photographers-india'
+      path: '/blog/hiring-wedding-photographers-india'
+      fullPath: '/blog/hiring-wedding-photographers-india'
+      preLoaderRoute: typeof BlogHiringWeddingPhotographersIndiaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
@@ -323,6 +344,8 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  BlogHiringWeddingPhotographersIndiaRoute:
+    BlogHiringWeddingPhotographersIndiaRoute,
   PhotographersIdRoute: PhotographersIdRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
