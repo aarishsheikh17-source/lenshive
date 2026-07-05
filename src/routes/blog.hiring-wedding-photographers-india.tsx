@@ -27,9 +27,31 @@ export const Route = createFileRoute("/blog/hiring-wedding-photographers-india")
           headline: TITLE,
           description: DESCRIPTION,
           url: URL,
-          author: { "@type": "Organization", name: "LensHive" },
-          publisher: { "@type": "Organization", name: "LensHive" },
           mainEntityOfPage: URL,
+          datePublished: "2026-01-15",
+          dateModified: "2026-07-05",
+          inLanguage: "en-IN",
+          author: { "@type": "Organization", name: "LensHive", url: "https://lenshive.lovable.app" },
+          publisher: {
+            "@type": "Organization",
+            name: "LensHive",
+            logo: { "@type": "ImageObject", url: "https://lenshive.lovable.app/favicon.ico" },
+          },
+          about: [
+            { "@type": "Thing", name: "Wedding photography" },
+            { "@type": "Thing", name: "India" },
+          ],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://lenshive.lovable.app/" },
+            { "@type": "ListItem", position: 2, name: "Guide", item: URL },
+          ],
         }),
       },
     ],

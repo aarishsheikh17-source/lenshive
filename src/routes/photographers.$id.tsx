@@ -57,25 +57,74 @@ export const Route = createFileRoute("/photographers/$id")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Person",
-            name,
+            "@type": "ProfilePage",
             url,
-            jobTitle: "Photographer",
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: p.city ?? undefined,
-              addressCountry: p.country ?? undefined,
+            mainEntity: {
+              "@type": "Person",
+              name,
+              url,
+              jobTitle: "Photographer",
+              description: p.bio ?? undefined,
+              image: p.profile?.avatar_url ?? p.portfolio[0]?.public_url ?? undefined,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: p.city ?? undefined,
+                addressCountry: p.country ?? undefined,
+              },
+              knowsAbout: p.specializations,
+              sameAs: [
+                p.instagram_handle ? `https://instagram.com/${p.instagram_handle}` : null,
+                p.website_url ?? null,
+              ].filter(Boolean),
+              ...(p.pricing_full?.hourly_rate
+                ? {
+                    makesOffer: [
+                      {
+                        "@type": "Offer",
+                        name: "Hourly photography session",
+                        price: p.pricing_full.hourly_rate,
+                        priceCurrency: p.pricing_full.currency ?? "INR",
+                      },
+                      ...(p.pricing_full.half_day_rate
+                        ? [{ "@type": "Offer", name: "Half-day photography", price: p.pricing_full.half_day_rate, priceCurrency: p.pricing_full.currency ?? "INR" }]
+                        : []),
+                      ...(p.pricing_full.full_day_rate
+                        ? [{ "@type": "Offer", name: "Full-day photography", price: p.pricing_full.full_day_rate, priceCurrency: p.pricing_full.currency ?? "INR" }]
+                        : []),
+                    ],
+                  }
+                : {}),
+              ...(p.total_reviews > 0
+                ? {
+                    aggregateRating: {
+                      "@type": "AggregateRating",
+                      ratingValue: p.rating,
+                      reviewCount: p.total_reviews,
+                      bestRating: 5,
+                      worstRating: 1,
+                    },
+                    review: p.reviews.slice(0, 5).map((r) => ({
+                      "@type": "Review",
+                      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
+                      author: { "@type": "Person", name: r.client?.full_name ?? "Client" },
+                      datePublished: r.created_at,
+                      reviewBody: r.comment ?? undefined,
+                    })),
+                  }
+                : {}),
             },
-            image: p.profile?.avatar_url ?? p.portfolio[0]?.public_url ?? undefined,
-            ...(p.total_reviews > 0
-              ? {
-                  aggregateRating: {
-                    "@type": "AggregateRating",
-                    ratingValue: p.rating,
-                    reviewCount: p.total_reviews,
-                  },
-                }
-              : {}),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://lenshive.lovable.app/" },
+              { "@type": "ListItem", position: 2, name: "Browse", item: "https://lenshive.lovable.app/browse" },
+              { "@type": "ListItem", position: 3, name, item: url },
+            ],
           }),
         },
       ],
