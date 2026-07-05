@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, ArrowRight, Star, Users, MapPin, Camera } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CardGrid, GridSkeleton } from "@/components/photographers/CardGrid";
@@ -71,7 +71,7 @@ function Home() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16 text-center">
           <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-ink bg-surface border border-border rounded-full px-3 py-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-honey" />
-            1,200+ photographers · 48 cities
+            Hire vetted photographers across India
           </span>
           <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-dark mt-6 leading-[1.05]">
             Find your perfect<br />
@@ -117,21 +117,6 @@ function Home() {
             </button>
           </form>
 
-          {/* trust strip */}
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-3xl mx-auto">
-            {[
-              { v: "1,200+", l: "Photographers", icon: Camera },
-              { v: "48", l: "Cities", icon: MapPin },
-              { v: "12,000+", l: "Shoots", icon: Users },
-              { v: "4.9★", l: "Avg rating", icon: Star },
-            ].map((s) => (
-              <div key={s.l} className="text-center">
-                <s.icon size={18} className="text-honey mx-auto mb-1" />
-                <div className="font-display text-2xl text-dark">{s.v}</div>
-                <div className="text-xs text-muted-ink uppercase tracking-wide">{s.l}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
