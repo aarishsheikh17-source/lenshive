@@ -27,6 +27,7 @@ export function Footer() {
             <li><a href="#" className="hover:text-white">About</a></li>
             <li><a href="#" className="hover:text-white">Blog</a></li>
             <li><a href="#" className="hover:text-white">Contact</a></li>
+            <li><Link to="/connect" className="hover:text-white">Connect AI assistant</Link></li>
           </ul>
         </div>
       </div>
