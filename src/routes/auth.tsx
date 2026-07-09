@@ -36,11 +36,21 @@ function AuthPage() {
 
   const redirectTo = search.redirect && search.redirect.startsWith("/") ? search.redirect : "/dashboard";
 
+  function goToRedirect() {
+    // consent URLs contain query strings / dots — bypass typed router and hard-navigate.
+    if (redirectTo.includes("?") || redirectTo.startsWith("/.")) {
+      window.location.href = redirectTo;
+    } else {
+      navigate({ to: redirectTo });
+    }
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate({ to: redirectTo });
+      if (session) goToRedirect();
     });
-  }, [navigate, redirectTo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +72,7 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Welcome back");
       }
-      navigate({ to: redirectTo });
+      goToRedirect();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -81,7 +91,7 @@ function AuthPage() {
       });
       if (result.error) throw result.error;
       // If not redirected (popup flow), session is set — proceed.
-      if (!result.redirected) navigate({ to: redirectTo });
+      if (!result.redirected) goToRedirect();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Google sign-in failed");
       setLoading(false);

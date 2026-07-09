@@ -29,7 +29,12 @@ function Callback() {
         sessionStorage.removeItem("lh_pending_user_type");
       }
       sessionStorage.removeItem("lh_post_auth_redirect");
-      navigate({ to: to.startsWith("/") ? to : "/dashboard" });
+      const dest = to.startsWith("/") ? to : "/dashboard";
+      if (dest.includes("?") || dest.startsWith("/.")) {
+        window.location.href = dest;
+      } else {
+        navigate({ to: dest });
+      }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
