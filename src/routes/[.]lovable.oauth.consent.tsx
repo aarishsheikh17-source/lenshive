@@ -110,7 +110,7 @@ function Consent() {
         <div className="mt-4 rounded-md border border-border bg-cream/40 p-3">
           <p className="text-xs font-medium text-ink">Requested access</p>
           <ul className="mt-1 text-sm text-ink/80 list-disc list-inside">
-            {scopes.map((s) => (
+            {scopes.map((s: string) => (
               <li key={s}>{s === "openid" ? "Verify your identity" : s === "email" ? "Share your email" : s === "profile" ? "Share your basic profile" : `Additional permission: ${s}`}</li>
             ))}
           </ul>
