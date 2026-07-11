@@ -423,6 +423,13 @@ function ProfilePage() {
         />
       )}
 
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        photographerId={p.id}
+        photographerName={name}
+      />
+
       <Footer />
     </div>
   );
