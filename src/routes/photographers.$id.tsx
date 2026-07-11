@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui-app/Avatar";
 import { Stars } from "@/components/ui-app/Stars";
 import { getPhotographer } from "@/lib/photographers";
 import { formatPrice, formatDate } from "@/lib/utils-app";
+import { ContactModal } from "@/components/enquiry/ContactModal";
 
 export const Route = createFileRoute("/photographers/$id")({
   loader: async ({ context, params }) => {
