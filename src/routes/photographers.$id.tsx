@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui-app/Avatar";
 import { Stars } from "@/components/ui-app/Stars";
 import { getPhotographer } from "@/lib/photographers";
 import { formatPrice, formatDate } from "@/lib/utils-app";
+import { ContactModal } from "@/components/enquiry/ContactModal";
 
 export const Route = createFileRoute("/photographers/$id")({
   loader: async ({ context, params }) => {
@@ -142,6 +143,7 @@ function ProfilePage() {
   const [tab, setTab] = useState<"hourly" | "half_day" | "full_day">("hourly");
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [shared, setShared] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   if (!data) return null;
   const p = data;
@@ -250,9 +252,8 @@ function ProfilePage() {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              disabled
-              className="bg-honey text-dark px-5 py-2.5 rounded-lg text-sm font-semibold opacity-70 cursor-not-allowed"
-              title="Enquiry flow ships in the next phase"
+              onClick={() => setContactOpen(true)}
+              className="bg-honey text-dark px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-amber transition"
             >
               Send enquiry
             </button>
@@ -398,9 +399,8 @@ function ProfilePage() {
             </ul>
             <button
               type="button"
-              disabled
-              className="mt-6 w-full bg-honey text-dark py-3 rounded-lg font-semibold opacity-70 cursor-not-allowed"
-              title="Enquiry flow ships in the next phase"
+              onClick={() => setContactOpen(true)}
+              className="mt-6 w-full bg-honey text-dark py-3 rounded-lg font-semibold hover:bg-amber transition"
             >
               Book this photographer
             </button>
@@ -422,6 +422,13 @@ function ProfilePage() {
           onIndex={setLightbox}
         />
       )}
+
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        photographerId={p.id}
+        photographerName={name}
+      />
 
       <Footer />
     </div>
