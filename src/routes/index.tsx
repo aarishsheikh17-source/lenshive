@@ -197,14 +197,13 @@ function Home() {
               Create your free profile, showcase your portfolio, and get hired by clients across
               India and worldwide.
             </p>
-            <button
-              type="button"
-              disabled
-              className="mt-6 bg-dark text-white px-7 py-3 rounded-xl font-semibold opacity-90 cursor-not-allowed"
-              title="Sign-up opens in the next phase"
+            <Link
+              to="/auth"
+              search={{ mode: "signup" } as any}
+              className="mt-6 inline-block bg-dark text-white px-7 py-3 rounded-xl font-semibold hover:bg-ink transition"
             >
-              Join free — coming soon →
-            </button>
+              Join free as a photographer →
+            </Link>
           </div>
         </div>
       </section>
