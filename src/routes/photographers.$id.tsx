@@ -252,9 +252,8 @@ function ProfilePage() {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              disabled
-              className="bg-honey text-dark px-5 py-2.5 rounded-lg text-sm font-semibold opacity-70 cursor-not-allowed"
-              title="Enquiry flow ships in the next phase"
+              onClick={() => setContactOpen(true)}
+              className="bg-honey text-dark px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-amber transition"
             >
               Send enquiry
             </button>
