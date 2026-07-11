@@ -143,6 +143,7 @@ function ProfilePage() {
   const [tab, setTab] = useState<"hourly" | "half_day" | "full_day">("hourly");
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [shared, setShared] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   if (!data) return null;
   const p = data;
