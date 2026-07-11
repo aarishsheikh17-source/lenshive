@@ -399,9 +399,8 @@ function ProfilePage() {
             </ul>
             <button
               type="button"
-              disabled
-              className="mt-6 w-full bg-honey text-dark py-3 rounded-lg font-semibold opacity-70 cursor-not-allowed"
-              title="Enquiry flow ships in the next phase"
+              onClick={() => setContactOpen(true)}
+              className="mt-6 w-full bg-honey text-dark py-3 rounded-lg font-semibold hover:bg-amber transition"
             >
               Book this photographer
             </button>
