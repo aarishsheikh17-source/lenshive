@@ -149,77 +149,137 @@ function AuthPage() {
             <span className="flex-1 h-px bg-border" /> or <span className="flex-1 h-px bg-border" />
           </div>
 
-          <form onSubmit={handleEmailSubmit} className="space-y-3">
-            {mode === "signup" && (
-              <>
+          {showForgot ? (
+            <form onSubmit={handleForgotPassword} className="space-y-4 mt-6">
+              <h2 className="font-serif text-2xl text-dark">Reset your password</h2>
+              <p className="text-sm text-ink/70">Enter your email and we'll send you a reset link.</p>
+              <div>
+                <label className="text-xs font-medium text-ink" htmlFor="forgotEmail">Email</label>
+                <input
+                  id="forgotEmail"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={forgotLoading}
+                className="w-full bg-honey text-dark font-medium px-4 py-2.5 rounded-md hover:bg-amber transition disabled:opacity-60"
+              >
+                {forgotLoading ? "Sending…" : "Send reset link"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowForgot(false)}
+                className="w-full text-sm text-ink/70 hover:text-dark"
+              >
+                Back to login
+              </button>
+            </form>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={handleGoogle}
+                disabled={loading}
+                className="mt-6 w-full inline-flex items-center justify-center gap-2 border border-border bg-white hover:bg-cream px-4 py-2.5 rounded-md text-sm font-medium text-dark disabled:opacity-60"
+              >
+                <GoogleIcon /> Continue with Google
+              </button>
+
+              <div className="my-5 flex items-center gap-3 text-xs text-ink/50">
+                <span className="flex-1 h-px bg-border" /> or <span className="flex-1 h-px bg-border" />
+              </div>
+
+              <form onSubmit={handleEmailSubmit} className="space-y-3">
+                {mode === "signup" && (
+                  <>
+                    <div>
+                      <label className="text-xs font-medium text-ink" htmlFor="fullName">Full name</label>
+                      <input
+                        id="fullName"
+                        type="text"
+                        required
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
+                      />
+                    </div>
+                    <div role="radiogroup" aria-labelledby="user-type-label">
+                      <span id="user-type-label" className="text-xs font-medium text-ink">I'm signing up as</span>
+                      <div className="mt-1 grid grid-cols-2 gap-2">
+                        {(["client", "photographer"] as const).map((t) => (
+                          <button
+                            key={t}
+                            type="button"
+                            role="radio"
+                            aria-checked={userType === t}
+                            aria-label={t === "client" ? "Sign up as a Client (hire photographers)" : "Sign up as a Photographer (list your services)"}
+                            onClick={() => setUserType(t)}
+                            className={`text-sm px-3 py-2 rounded-md border transition ${
+                              userType === t
+                                ? "bg-honey/20 border-honey text-dark"
+                                : "bg-white border-border text-ink hover:bg-cream"
+                            }`}
+                          >
+                            {t === "client" ? "Client" : "Photographer"}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div>
-                  <label className="text-xs font-medium text-ink" htmlFor="fullName">Full name</label>
+                  <label className="text-xs font-medium text-ink" htmlFor="email">Email</label>
                   <input
-                    id="fullName"
-                    type="text"
+                    id="email"
+                    type="email"
                     required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
                   />
                 </div>
-                <div role="radiogroup" aria-labelledby="user-type-label">
-                  <span id="user-type-label" className="text-xs font-medium text-ink">I'm signing up as</span>
-                  <div className="mt-1 grid grid-cols-2 gap-2">
-                    {(["client", "photographer"] as const).map((t) => (
+                <div>
+                  <label className="text-xs font-medium text-ink" htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    required
+                    minLength={6}
+                    autoComplete={mode === "signin" ? "current-password" : "new-password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
+                  />
+                  {mode === "signin" && (
+                    <div className="text-right mt-1">
                       <button
-                        key={t}
                         type="button"
-                        role="radio"
-                        aria-checked={userType === t}
-                        aria-label={t === "client" ? "Sign up as a Client (hire photographers)" : "Sign up as a Photographer (list your services)"}
-                        onClick={() => setUserType(t)}
-                        className={`text-sm px-3 py-2 rounded-md border transition ${
-                          userType === t
-                            ? "bg-honey/20 border-honey text-dark"
-                            : "bg-white border-border text-ink hover:bg-cream"
-                        }`}
+                        onClick={() => setShowForgot(true)}
+                        className="text-sm text-amber-600 hover:text-amber-700 font-medium"
                       >
-                        {t === "client" ? "Client" : "Photographer"}
+                        Forgot password?
                       </button>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
-              </>
-            )}
-            <div>
-              <label className="text-xs font-medium text-ink" htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-ink" htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                autoComplete={mode === "signin" ? "current-password" : "new-password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full border border-border rounded-md px-3 py-2 text-sm bg-white"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-honey text-dark font-medium px-4 py-2.5 rounded-md hover:bg-amber transition disabled:opacity-60"
-            >
-              {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
-            </button>
-          </form>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-honey text-dark font-medium px-4 py-2.5 rounded-md hover:bg-amber transition disabled:opacity-60"
+                >
+                  {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+                </button>
+              </form>
+            </>
+          )}
 
           <p className="mt-5 text-center text-sm text-ink/70">
             {mode === "signin" ? (
