@@ -136,19 +136,6 @@ function AuthPage() {
               : "Create your account in a minute."}
           </p>
 
-          <button
-            type="button"
-            onClick={handleGoogle}
-            disabled={loading}
-            className="mt-6 w-full inline-flex items-center justify-center gap-2 border border-border bg-white hover:bg-cream px-4 py-2.5 rounded-md text-sm font-medium text-dark disabled:opacity-60"
-          >
-            <GoogleIcon /> Continue with Google
-          </button>
-
-          <div className="my-5 flex items-center gap-3 text-xs text-ink/50">
-            <span className="flex-1 h-px bg-border" /> or <span className="flex-1 h-px bg-border" />
-          </div>
-
           {showForgot ? (
             <form onSubmit={handleForgotPassword} className="space-y-4 mt-6">
               <h2 className="font-serif text-2xl text-dark">Reset your password</h2>
