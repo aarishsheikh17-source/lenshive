@@ -101,6 +101,27 @@ function AuthPage() {
     }
   }
 
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (!forgotEmail || !forgotEmail.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    setForgotLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
+    setForgotLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    // Security best practice: don't reveal whether the email exists.
+    toast.success("If that email is registered, you'll receive a reset link shortly.");
+    setShowForgot(false);
+    setForgotEmail("");
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-cream">
       <Navbar />
