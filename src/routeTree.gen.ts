@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SeoJsonldValidatorRouteImport } from './routes/seo.jsonld-validator'
 import { Route as PhotographersIdRouteImport } from './routes/photographers.$id'
 import { Route as BlogHiringWeddingPhotographersIndiaRouteImport } from './routes/blog.hiring-wedding-photographers-india'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -76,6 +77,11 @@ const BlogHiringWeddingPhotographersIndiaRoute =
     path: '/blog/hiring-wedding-photographers-india',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/auth/callback'
+    | '/auth/reset-password'
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/auth/callback'
+    | '/auth/reset-password'
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/dashboard'
     | '/auth/callback'
+    | '/auth/reset-password'
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
@@ -307,6 +319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogHiringWeddingPhotographersIndiaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/auth/callback': {
       id: '/auth/callback'
       path: '/callback'
@@ -365,10 +384,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface AuthRouteChildren {
   AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCallbackRoute: AuthCallbackRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
