@@ -33,6 +33,9 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [userType, setUserType] = useState<"client" | "photographer">("client");
   const [loading, setLoading] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const redirectTo = search.redirect && search.redirect.startsWith("/") ? search.redirect : "/dashboard";
 
