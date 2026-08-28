@@ -13,9 +13,9 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as BrowseRouteImport } from './routes/browse'
-import { Route as AuthRouteRouteImport } from './routes/auth.route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthIndexRouteImport } from './routes/auth.index'
 import { Route as SeoJsonldValidatorRouteImport } from './routes/seo.jsonld-validator'
 import { Route as PhotographersIdRouteImport } from './routes/photographers.$id'
 import { Route as BlogHiringWeddingPhotographersIndiaRouteImport } from './routes/blog.hiring-wedding-photographers-india'
@@ -47,11 +47,6 @@ const BrowseRoute = BrowseRouteImport.update({
   path: '/browse',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -59,6 +54,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SeoJsonldValidatorRoute = SeoJsonldValidatorRouteImport.update({
@@ -78,14 +78,14 @@ const BlogHiringWeddingPhotographersIndiaRoute =
     getParentRoute: () => rootRouteImport,
   } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AuthRouteRoute,
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => AuthRouteRoute,
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -118,7 +118,6 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
   '/browse': typeof BrowseRoute
   '/connect': typeof ConnectRoute
   '/mcp': typeof McpRoute
@@ -131,12 +130,12 @@ export interface FileRoutesByFullPath {
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
+  '/auth/': typeof AuthIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
   '/browse': typeof BrowseRoute
   '/connect': typeof ConnectRoute
   '/mcp': typeof McpRoute
@@ -149,6 +148,7 @@ export interface FileRoutesByTo {
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
+  '/auth': typeof AuthIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -156,7 +156,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRouteRouteWithChildren
   '/browse': typeof BrowseRoute
   '/connect': typeof ConnectRoute
   '/mcp': typeof McpRoute
@@ -169,6 +168,7 @@ export interface FileRoutesById {
   '/blog/hiring-wedding-photographers-india': typeof BlogHiringWeddingPhotographersIndiaRoute
   '/photographers/$id': typeof PhotographersIdRoute
   '/seo/jsonld-validator': typeof SeoJsonldValidatorRoute
+  '/auth/': typeof AuthIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -176,7 +176,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
     | '/browse'
     | '/connect'
     | '/mcp'
@@ -189,12 +188,12 @@ export interface FileRouteTypes {
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
+    | '/auth/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/browse'
     | '/connect'
     | '/mcp'
@@ -207,13 +206,13 @@ export interface FileRouteTypes {
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
+    | '/auth'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/auth'
     | '/browse'
     | '/connect'
     | '/mcp'
@@ -226,6 +225,7 @@ export interface FileRouteTypes {
     | '/blog/hiring-wedding-photographers-india'
     | '/photographers/$id'
     | '/seo/jsonld-validator'
+    | '/auth/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -233,16 +233,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   BrowseRoute: typeof BrowseRoute
   ConnectRoute: typeof ConnectRoute
   McpRoute: typeof McpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   BlogHiringWeddingPhotographersIndiaRoute: typeof BlogHiringWeddingPhotographersIndiaRoute
   PhotographersIdRoute: typeof PhotographersIdRoute
   SeoJsonldValidatorRoute: typeof SeoJsonldValidatorRoute
+  AuthIndexRoute: typeof AuthIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -277,13 +279,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -296,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seo/jsonld-validator': {
@@ -321,17 +323,17 @@ declare module '@tanstack/react-router' {
     }
     '/auth/reset-password': {
       id: '/auth/reset-password'
-      path: '/reset-password'
+      path: '/auth/reset-password'
       fullPath: '/auth/reset-password'
       preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
+      parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
       id: '/auth/callback'
-      path: '/callback'
+      path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
-      parentRoute: typeof AuthRouteRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -382,24 +384,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface AuthRouteRouteChildren {
-  AuthCallbackRoute: typeof AuthCallbackRoute
-  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
-}
-
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthCallbackRoute: AuthCallbackRoute,
-  AuthResetPasswordRoute: AuthResetPasswordRoute,
-}
-
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRouteRoute: AuthRouteRouteWithChildren,
   BrowseRoute: BrowseRoute,
   ConnectRoute: ConnectRoute,
   McpRoute: McpRoute,
@@ -407,10 +394,13 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   BlogHiringWeddingPhotographersIndiaRoute:
     BlogHiringWeddingPhotographersIndiaRoute,
   PhotographersIdRoute: PhotographersIdRoute,
   SeoJsonldValidatorRoute: SeoJsonldValidatorRoute,
+  AuthIndexRoute: AuthIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
