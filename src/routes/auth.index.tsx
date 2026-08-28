@@ -12,7 +12,7 @@ const searchSchema = z.object({
   redirect: z.string().optional(),
 });
 
-export const Route = createFileRoute("/auth")({
+export const Route = createFileRoute("/auth/")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const search = useSearch({ from: "/auth" });
+  const search = useSearch({ from: "/auth/" });
   const [mode, setMode] = useState<"signin" | "signup">(search.mode ?? "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
