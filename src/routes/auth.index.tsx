@@ -143,7 +143,24 @@ function AuthPage() {
               : "Create your account in a minute."}
           </p>
 
-          {showForgot ? (
+          {confirmSent ? (
+            <div className="mt-6 space-y-4">
+              <div className="rounded-lg border border-honey bg-honey/10 p-4">
+                <h2 className="font-serif text-xl text-dark">Check your email</h2>
+                <p className="mt-1 text-sm text-ink/80">
+                  We sent a confirmation link to <span className="font-medium">{email}</span>.
+                  Click it to activate your account, then sign in.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => { setConfirmSent(false); setMode("signin"); setPassword(""); }}
+                className="w-full bg-honey text-dark font-medium px-4 py-2.5 rounded-md hover:bg-amber transition"
+              >
+                Back to sign in
+              </button>
+            </div>
+          ) : showForgot ? (
             <form onSubmit={handleForgotPassword} className="space-y-4 mt-6">
               <h2 className="font-serif text-2xl text-dark">Reset your password</h2>
               <p className="text-sm text-ink/70">Enter your email and we'll send you a reset link.</p>
