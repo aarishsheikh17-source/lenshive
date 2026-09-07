@@ -36,6 +36,7 @@ function AuthPage() {
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
+  const [confirmSent, setConfirmSent] = useState(false);
 
   const redirectTo = search.redirect && search.redirect.startsWith("/") ? search.redirect : "/dashboard";
 
@@ -60,7 +61,7 @@ function AuthPage() {
     setLoading(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -69,7 +70,13 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Account created. Check your email if confirmation is required.");
+        if (!data.session) {
+          // Email confirmation is on: the user is NOT signed in yet.
+          setConfirmSent(true);
+          toast.success("Account created. Check your email to confirm your address.");
+          return;
+        }
+        toast.success("Account created. Welcome to LensHive!");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -136,7 +143,24 @@ function AuthPage() {
               : "Create your account in a minute."}
           </p>
 
-          {showForgot ? (
+          {confirmSent ? (
+            <div className="mt-6 space-y-4">
+              <div className="rounded-lg border border-honey bg-honey/10 p-4">
+                <h2 className="font-serif text-xl text-dark">Check your email</h2>
+                <p className="mt-1 text-sm text-ink/80">
+                  We sent a confirmation link to <span className="font-medium">{email}</span>.
+                  Click it to activate your account, then sign in.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => { setConfirmSent(false); setMode("signin"); setPassword(""); }}
+                className="w-full bg-honey text-dark font-medium px-4 py-2.5 rounded-md hover:bg-amber transition"
+              >
+                Back to sign in
+              </button>
+            </div>
+          ) : showForgot ? (
             <form onSubmit={handleForgotPassword} className="space-y-4 mt-6">
               <h2 className="font-serif text-2xl text-dark">Reset your password</h2>
               <p className="text-sm text-ink/70">Enter your email and we'll send you a reset link.</p>
