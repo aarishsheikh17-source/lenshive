@@ -4,6 +4,7 @@ import type { PhotographerListItem } from "@/lib/photographers";
 import { Avatar } from "@/components/ui-app/Avatar";
 import { Stars } from "@/components/ui-app/Stars";
 import { formatPrice } from "@/lib/utils-app";
+import { SaveButton } from "@/components/photographers/SaveButton";
 
 export function PhotographerCard({ p }: { p: PhotographerListItem }) {
   return (
@@ -23,6 +24,7 @@ export function PhotographerCard({ p }: { p: PhotographerListItem }) {
         ) : (
           <div className="w-full h-full shimmer" />
         )}
+        <SaveButton photographerId={p.id} />
         {p.is_available && (
           <span className="absolute top-3 left-3 bg-surface/95 backdrop-blur text-xs font-medium px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 text-ink">
             <span className="w-1.5 h-1.5 rounded-full bg-success" />
