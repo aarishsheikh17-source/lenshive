@@ -87,7 +87,6 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-border bg-surface text-ink hover:bg-cream transition"
           >
-            {open ? <Menu size={20} className="hidden" /> : null}
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
