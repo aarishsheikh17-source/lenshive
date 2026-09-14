@@ -4,6 +4,7 @@ import type { PhotographerListItem } from "@/lib/photographers";
 import { Avatar } from "@/components/ui-app/Avatar";
 import { Stars } from "@/components/ui-app/Stars";
 import { formatPrice } from "@/lib/utils-app";
+import { SaveButton } from "@/components/photographers/SaveButton";
 
 export function PhotographerCard({ p }: { p: PhotographerListItem }) {
   return (
