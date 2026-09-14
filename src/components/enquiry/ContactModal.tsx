@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { sendEnquiryNotifications } from "@/lib/notifications";
 
 interface ContactModalProps {
   open: boolean;
@@ -54,7 +55,7 @@ export function ContactModal({ open, onClose, photographerId, photographerName }
     evt.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    const { error } = await supabase.from("enquiries").insert({
+    const { data: inserted, error } = await supabase.from("enquiries").insert({
       photographer_id: photographerId,
       client_name: form.name.trim(),
       client_email: form.email.trim(),
@@ -66,12 +67,13 @@ export function ContactModal({ open, onClose, photographerId, photographerName }
       message: form.message.trim(),
       client_id: user?.id || null,
       status: "unread",
-    });
+    }).select("id").single();
     setSubmitting(false);
     if (error) {
       toast.error(error.message || "Could not send enquiry. Please try again.");
       return;
     }
+    if (inserted?.id) void sendEnquiryNotifications(inserted.id);
     toast.success("Enquiry sent! They'll reply within 24 hours.");
     setForm({ name: "", email: "", phone: "", shootDate: "", shootType: "", bookingType: "", location: "", message: "" });
     setErrors({});
