@@ -343,6 +343,37 @@ function PhotogOverview({
     <div className="space-y-6">
       <h1 className="font-serif text-3xl sm:text-4xl text-dark">Welcome back, {firstName}!</h1>
 
+      {!photog.is_published ? (
+        <div className="bg-honey/10 border border-honey/30 rounded-xl p-5">
+          <h3 className="font-semibold text-dark mb-1">Activate your profile — ₹99/month</h3>
+          <p className="text-sm text-ink/60 mb-4">
+            Pay ₹99 to go live and start receiving client enquiries. Clients across India can then find and contact you directly.
+          </p>
+          <div className="space-y-2">
+            <a
+              href="https://rzp.io/l/lenshire"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-full bg-honey text-dark py-3 rounded-lg text-sm font-bold hover:bg-amber transition"
+            >
+              Pay ₹99 via Razorpay →
+            </a>
+            <p className="text-xs text-ink/60 text-center">
+              Or pay via UPI: <strong>lenshire@upi</strong> · WhatsApp payment screenshot to get activated
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+          <span className="text-green-600 text-xl">✓</span>
+          <div>
+            <p className="text-sm font-semibold text-green-800">Your profile is live!</p>
+            <p className="text-xs text-green-600">Clients can find and contact you on LensHive.</p>
+          </div>
+        </div>
+      )}
+
+
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <MetricCard label="Profile Views" value={photog.profile_views} />
         <MetricCard label="Total Enquiries" value={totalEnq} />
