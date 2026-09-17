@@ -138,12 +138,13 @@ function DashboardPage() {
     setUserId(user.id);
     setEmail(user.email ?? "");
 
-    const { data: prof } = await supabase
-      .from("profiles")
-      .select("id, full_name, email, phone, user_type")
-      .eq("id", user.id)
-      .maybeSingle();
-    setProfile((prof as ProfileRow) ?? { id: user.id, full_name: null, email: user.email ?? null, phone: null, user_type: "client" });
+    let prof: ProfileRow | null = null;
+    try {
+      prof = (await getMyProfile()) as ProfileRow | null;
+    } catch {
+      prof = null;
+    }
+    setProfile(prof ?? { id: user.id, full_name: null, email: user.email ?? null, phone: null, user_type: "client" });
 
     if (prof?.user_type === "photographer") {
       const { data: p } = await supabase
