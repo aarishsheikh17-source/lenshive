@@ -500,8 +500,9 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
         <ul className="space-y-3">
           {rows.map((e) => {
             const unread = e.status === "unread";
+            const accepted = e.status === "accepted";
             return (
-              <li key={e.id} className={`rounded-xl border border-border bg-white p-5 ${unread ? "border-l-4 border-l-amber" : ""}`}>
+              <li key={e.id} className={`rounded-xl border border-border bg-white p-5 ${unread ? "border-l-4 border-l-amber" : accepted ? "border-l-4 border-l-green-500" : ""}`}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <div className="font-semibold text-dark">{e.client_name}</div>
@@ -515,18 +516,30 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
                       {e.shoot_type && <span className="text-[11px] bg-honey/20 text-dark px-2 py-0.5 rounded-full">{e.shoot_type}</span>}
                       {e.booking_type && <span className="text-[11px] bg-cream text-ink px-2 py-0.5 rounded-full border border-border">{e.booking_type}</span>}
                       {unread && <span className="text-[11px] bg-red-500 text-white px-2 py-0.5 rounded-full">Unread</span>}
+                      {accepted && <span className="text-[11px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Booking confirmed</span>}
                     </div>
                   </div>
                   <div className="text-xs text-ink/50">{formatDate(e.created_at)}</div>
                 </div>
                 <p className="mt-3 text-sm text-ink whitespace-pre-wrap">{e.message}</p>
-                {unread && (
-                  <div className="mt-3">
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {unread && (
                     <button onClick={() => markRead(e.id)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-dark text-white px-3 py-1.5 rounded-lg hover:bg-ink">
                       <Check className="size-3" /> Mark as read
                     </button>
-                  </div>
-                )}
+                  )}
+                  {!accepted && (
+                    <button
+                      onClick={() => acceptBooking(e.id)}
+                      disabled={accepting === e.id}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold bg-honey text-dark px-3 py-1.5 rounded-lg hover:bg-amber transition disabled:opacity-60"
+                    >
+                      {accepting === e.id ? <Loader2 className="size-3 animate-spin" /> : <Check className="size-3" />}
+                      {accepting === e.id ? "Confirming…" : "Accept & confirm booking"}
+                    </button>
+                  )}
+                </div>
+
               </li>
             );
           })}
