@@ -78,6 +78,52 @@ ${d.shootDate ? `Your requested shoot date is <strong>${esc(d.shootDate)}</stron
 <div class="footer">LensHive · India's photographer marketplace</div>`);
 }
 
+export interface BookingConfirmedData {
+  clientName: string;
+  photographerName: string;
+  photographerEmail?: string | null;
+  photographerPhone?: string | null;
+  shootDate?: string | null;
+  shootType?: string | null;
+  bookingType?: string | null;
+  location?: string | null;
+  photographerId: string;
+}
+
+/** Sent to the client when the photographer accepts the enquiry. */
+export function bookingConfirmedClientHTML(d: BookingConfirmedData) {
+  return shell(`
+<h2>Your shoot with ${esc(d.photographerName)} is confirmed! 🎉</h2>
+<p>Hi ${esc(d.clientName)}, good news — ${esc(d.photographerName)} has accepted your booking enquiry.</p>
+${row("Shoot date", d.shootDate)}
+${row("Shoot type", d.shootType)}
+${row("Booking type", d.bookingType)}
+${row("Location", d.location)}
+${row("Photographer email", d.photographerEmail)}
+${row("Photographer phone", d.photographerPhone)}
+<div class="box"><strong>What happens next?</strong><br/>
+${esc(d.photographerName)} will contact you directly to finalise timings, deliverables and payment.</div>
+<a href="${SITE}/photographers/${esc(d.photographerId)}" class="btn">View photographer profile →</a>
+<div class="footer">LensHive · India's photographer marketplace</div>`);
+}
+
+/** Copy of the confirmation sent to the photographer for their records. */
+export function bookingConfirmedPhotographerHTML(
+  d: BookingConfirmedData & { clientEmail: string; clientPhone?: string | null },
+) {
+  return shell(`
+<h2>Booking confirmed with ${esc(d.clientName)} ✅</h2>
+<p>You accepted this enquiry. We've let ${esc(d.clientName)} know the shoot is confirmed.</p>
+${row("Client email", d.clientEmail)}
+${row("Client phone", d.clientPhone)}
+${row("Shoot date", d.shootDate)}
+${row("Shoot type", d.shootType)}
+${row("Booking type", d.bookingType)}
+${row("Location", d.location)}
+<a href="${SITE}/dashboard" class="btn">Open your dashboard →</a>
+<div class="footer">LensHive · India's photographer marketplace</div>`);
+}
+
 export function welcomePhotographerHTML(d: { name: string }) {
   return shell(`
 <h2>Welcome to LensHive, ${esc(d.name)}! 🎉</h2>
