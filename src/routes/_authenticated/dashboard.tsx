@@ -475,6 +475,17 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
     toast.success("Marked as read");
   }
 
+  async function acceptBooking(id: string) {
+    setAccepting(id);
+    const { error } = await supabase.from("enquiries").update({ status: "accepted" }).eq("id", id);
+    if (error) { setAccepting(null); toast.error("Could not confirm this booking"); return; }
+    setRows((r) => r.map((x) => (x.id === id ? { ...x, status: "accepted" } : x)));
+    onUnreadRefresh();
+    await sendBookingConfirmation(id);
+    setAccepting(null);
+    toast.success("Booking confirmed — we've emailed the client.");
+  }
+
   return (
     <div className="space-y-4">
       <h1 className="font-serif text-3xl text-dark">Messages</h1>
