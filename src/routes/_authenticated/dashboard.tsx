@@ -22,6 +22,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { formatDate } from "@/lib/utils-app";
+import { getMyProfile } from "@/lib/profile.functions";
+import { sendBookingConfirmation } from "@/lib/notifications";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
