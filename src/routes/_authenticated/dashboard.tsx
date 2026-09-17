@@ -22,6 +22,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { formatDate } from "@/lib/utils-app";
+import { getMyProfile } from "@/lib/profile.functions";
+import { sendBookingConfirmation } from "@/lib/notifications";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -138,12 +140,13 @@ function DashboardPage() {
     setUserId(user.id);
     setEmail(user.email ?? "");
 
-    const { data: prof } = await supabase
-      .from("profiles")
-      .select("id, full_name, email, phone, user_type")
-      .eq("id", user.id)
-      .maybeSingle();
-    setProfile((prof as ProfileRow) ?? { id: user.id, full_name: null, email: user.email ?? null, phone: null, user_type: "client" });
+    let prof: ProfileRow | null = null;
+    try {
+      prof = (await getMyProfile()) as ProfileRow | null;
+    } catch {
+      prof = null;
+    }
+    setProfile(prof ?? { id: user.id, full_name: null, email: user.email ?? null, phone: null, user_type: "client" });
 
     if (prof?.user_type === "photographer") {
       const { data: p } = await supabase
@@ -449,6 +452,7 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
   const [rows, setRows] = useState<EnquiryRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [accepting, setAccepting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -472,6 +476,17 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
     toast.success("Marked as read");
   }
 
+  async function acceptBooking(id: string) {
+    setAccepting(id);
+    const { error } = await supabase.from("enquiries").update({ status: "accepted" }).eq("id", id);
+    if (error) { setAccepting(null); toast.error("Could not confirm this booking"); return; }
+    setRows((r) => r.map((x) => (x.id === id ? { ...x, status: "accepted" } : x)));
+    onUnreadRefresh();
+    await sendBookingConfirmation(id);
+    setAccepting(null);
+    toast.success("Booking confirmed — we've emailed the client.");
+  }
+
   return (
     <div className="space-y-4">
       <h1 className="font-serif text-3xl text-dark">Messages</h1>
@@ -485,8 +500,9 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
         <ul className="space-y-3">
           {rows.map((e) => {
             const unread = e.status === "unread";
+            const accepted = e.status === "accepted";
             return (
-              <li key={e.id} className={`rounded-xl border border-border bg-white p-5 ${unread ? "border-l-4 border-l-amber" : ""}`}>
+              <li key={e.id} className={`rounded-xl border border-border bg-white p-5 ${unread ? "border-l-4 border-l-amber" : accepted ? "border-l-4 border-l-green-500" : ""}`}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <div className="font-semibold text-dark">{e.client_name}</div>
@@ -500,18 +516,30 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
                       {e.shoot_type && <span className="text-[11px] bg-honey/20 text-dark px-2 py-0.5 rounded-full">{e.shoot_type}</span>}
                       {e.booking_type && <span className="text-[11px] bg-cream text-ink px-2 py-0.5 rounded-full border border-border">{e.booking_type}</span>}
                       {unread && <span className="text-[11px] bg-red-500 text-white px-2 py-0.5 rounded-full">Unread</span>}
+                      {accepted && <span className="text-[11px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Booking confirmed</span>}
                     </div>
                   </div>
                   <div className="text-xs text-ink/50">{formatDate(e.created_at)}</div>
                 </div>
                 <p className="mt-3 text-sm text-ink whitespace-pre-wrap">{e.message}</p>
-                {unread && (
-                  <div className="mt-3">
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {unread && (
                     <button onClick={() => markRead(e.id)} className="inline-flex items-center gap-1.5 text-xs font-medium bg-dark text-white px-3 py-1.5 rounded-lg hover:bg-ink">
                       <Check className="size-3" /> Mark as read
                     </button>
-                  </div>
-                )}
+                  )}
+                  {!accepted && (
+                    <button
+                      onClick={() => acceptBooking(e.id)}
+                      disabled={accepting === e.id}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold bg-honey text-dark px-3 py-1.5 rounded-lg hover:bg-amber transition disabled:opacity-60"
+                    >
+                      {accepting === e.id ? <Loader2 className="size-3 animate-spin" /> : <Check className="size-3" />}
+                      {accepting === e.id ? "Confirming…" : "Accept & confirm booking"}
+                    </button>
+                  )}
+                </div>
+
               </li>
             );
           })}
@@ -957,6 +985,7 @@ function ClientEnquiries({ email }: { email: string }) {
     unread: "bg-amber-100 text-amber-800",
     read: "bg-blue-100 text-blue-800",
     replied: "bg-emerald-100 text-emerald-800",
+    accepted: "bg-green-100 text-green-800",
     closed: "bg-slate-200 text-slate-700",
   };
 
