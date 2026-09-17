@@ -452,6 +452,7 @@ function MessagesSection({ photog, onUnreadRefresh }: { photog: PhotographerRow;
   const [rows, setRows] = useState<EnquiryRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [accepting, setAccepting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
