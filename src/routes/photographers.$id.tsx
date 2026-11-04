@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BadgeCheck,
   MapPin,
@@ -20,6 +20,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Avatar } from "@/components/ui-app/Avatar";
 import { Stars } from "@/components/ui-app/Stars";
 import { getPhotographer } from "@/lib/photographers";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { formatPrice, formatDate } from "@/lib/utils-app";
 import { ContactModal } from "@/components/enquiry/ContactModal";
 
@@ -145,6 +147,30 @@ function ProfilePage() {
   const [shared, setShared] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
+  // WhatsApp numbers are hidden from anonymous visitors (Data API grants).
+  // Signed-in users fetch it separately and RLS still scopes the read.
+  const { user } = useAuth();
+  const [whatsapp, setWhatsapp] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!user) {
+      setWhatsapp(null);
+      return;
+    }
+    supabase
+      .from("photographer_profiles")
+      .select("whatsapp_number")
+      .eq("id", id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled) setWhatsapp((data as { whatsapp_number: string | null } | null)?.whatsapp_number ?? null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, id]);
+
   if (!data) return null;
   const p = data;
   const name = p.profile?.full_name ?? "Photographer";
@@ -257,9 +283,9 @@ function ProfilePage() {
             >
               Send enquiry
             </button>
-            {p.whatsapp_number && (
+            {whatsapp && (
               <a
-                href={`https://wa.me/${p.whatsapp_number}`}
+                href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-success/10 text-success px-4 py-2.5 rounded-lg text-sm font-medium inline-flex items-center gap-1.5"
