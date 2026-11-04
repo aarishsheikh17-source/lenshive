@@ -140,7 +140,7 @@ export async function getPhotographer(id: string): Promise<PhotographerDetail | 
       id, user_id, bio, years_experience, specializations,
       is_available, available_for_travel, city, country,
       rating, total_reviews, is_published,
-      instagram_handle, whatsapp_number, website_url,
+      instagram_handle, website_url,
       profile:profiles!photographer_profiles_user_id_fkey ( full_name, avatar_url, is_verified ),
       pricing ( currency, hourly_rate, half_day_rate, full_day_rate, custom_project_available, custom_project_note ),
       portfolio_items ( id, public_url, caption, display_order ),
@@ -161,7 +161,9 @@ export async function getPhotographer(id: string): Promise<PhotographerDetail | 
   return {
     ...base,
     instagram_handle: (data as any).instagram_handle,
-    whatsapp_number: (data as any).whatsapp_number,
+    // whatsapp_number is intentionally omitted here: anonymous visitors cannot
+    // read that column (Data API grants). Signed-in views fetch it separately.
+    whatsapp_number: null,
     website_url: (data as any).website_url,
     pricing_full: pricingRow ?? null,
     portfolio: ((data as any).portfolio_items ?? [])
