@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793804908744,
+      "tag": "0000_scope_reviews_select_to_published_and_own",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793804917172,
+      "tag": "0001_bind_portfolio_object_reads_to_owner",
+      "breakpoints": true
+    }
+  ]
+}
